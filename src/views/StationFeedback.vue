@@ -1,100 +1,149 @@
 <template>
-    <div class="feedback-container">
-      <!-- Introduction Section -->
-      <div class="intro">
-        <h2>Welcome to Station Facilities Feedback</h2>
-        <p>
-          Please provide your feedback on the station facilities you have experienced. Your input helps us improve the quality and efficiency of the services we offer.
-        </p>
-      </div>
-  
-      <!-- Form Section -->
-      <div class="form-section">
-        <h1>Station Facilities</h1>
-        <form class="pure-form pure-form-stacked">
-          <fieldset>
-            <legend>Passenger Information</legend>
-    
-            <label for="name">Name</label>
-            <input id="name" type="text" placeholder="Enter your name" class="pure-input-1" />
-    
-            <label for="email">Email</label>
-            <input id="email" type="text" placeholder="Enter your email" class="pure-input-1" />
-    
-            <button type="submit" class="pure-button pure-button-primary">Submit</button>
-          </fieldset>
-        </form>
-      </div>
+  <form class="feed-form feed-form-stacked feedback-form">
+    <fieldset>
+      <legend>{{ title }}</legend>
+
+    <!-- Radio Buttons for Service Line -->
+    <div>
+    <fieldset>
+      <label for="serviceLine">Service Line</label>
+      <label>
+        <input type="radio" name="serviceLine" value="Line 1" v-model="selectedServiceLine" />
+        Line 1
+      </label>
+      <label>
+        <input type="radio" name="serviceLine" value="Line 2" v-model="selectedServiceLine" />
+        Line 2
+      </label>
+    </fieldset>
+
+    <!-- Service Line Dropdown -->
+    <div class="form-group">
+      <label for="serviceStation">Service Station</label>
+      <select id="serviceStation" class="pure-input-1" v-model="selectedServiceStation">
+        <option value="">Select a service station</option>
+        <option v-for="station in availableServiceStations" :key="station" :value="station">{{ station }}</option>
+      </select>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "StationFeedback",
-  };
-  </script>
-  
-  <style scoped>
-  /* Container */
-  .feedback-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Space between elements */
-    justify-content: space-between;
+
+    <!-- Feedback Sliders -->
+      <div class="form-group">
+        <label for="rating">Service Rating</label>
+        <input id="rating" type="range" min="1" max="5" value="3" class="pure-input-1" />
+        <span class="slider-labels">
+          <span>1</span>
+          <span>5</span>
+        </span>
+      </div>
+
+      <!-- Feedback Text -->
+      <div class="form-group">
+        <label for="feedback">Your Feedback</label>
+        <textarea
+          id="feedback"
+          placeholder="Write your feedback here..."
+          class="pure-input-1"
+        ></textarea>
+      </div>
+
+    <button type="submit" class="pure-btn button-primary">Submit</button>
+  </div>
+</fieldset>
+</form>
+</template>
+
+<script>
+export default {
+  name: "StationFeedback",
+  props: {
+    title: {
+      type: String,
+      default: "Station Feedback",
+    },
+  },
+  data() {
+    return {
+      selectedServiceLine: "", // Stores the selected station
+      selectedServiceStation: "", // Stores the selected service line
+      serviceStations: {
+        "Line 1": ["Station A", "Station B"],
+        "Line 2": ["Station C", "Station D"],
+      },
+    };
+  },
+  computed: {
+    // Compute the available service lines based on the selected service station
+    availableServiceStations() {
+      return this.selectedServiceLine ? this.serviceStations[this.selectedServiceLine] : [];
+    }
   }
-  
-  /* Introduction Section with Background Image */
-.intro {
-position: relative;
-  flex: 1;
-  min-width: 300px;
-  padding: 40px;
-  background-image: url('/images/FEEDBACK.png'); /* Add the image URL */
-  background-size: cover;
-  background-position: center;
-  color: white;
+};
+</script>
+
+<style scoped>
+/* Form Container */
+.feedback-form {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 90%;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
   border-radius: 5px;
-}
-.intro::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Black with 40% opacity */
-  z-index: 1; /* Make sure the overlay is on top of the image */
-}
-.intro h2, .intro p {
-  position: relative;
-  z-index: 2; /* Ensure text is above the overlay */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-  /* Form Section */
-  .form-section {
-    flex: 2;
-    min-width: 300px; /* Ensure it takes minimum 300px on small screens */
-    padding: 20px;
-  }
-  
-  .form-section h1 {
-    text-align: center;
-    color: #0073e6;
-  }
-  
-  .pure-form-stacked fieldset {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
-    background: #f9f9f9;
-  }
-  
-  .pure-form-stacked input {
-    margin-bottom: 10px;
-  }
-  
-  .pure-button {
-    margin-top: 10px;
-  }
-  </style>
-  
+/* Custom styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.pure-input-1 {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+fieldset {
+  border: none;
+  margin-bottom: 25px;
+}
+
+legend {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+label {
+  margin-right: 20px;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Slider Labels */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #000000;
+  margin-top: 3px;
+}
+
+/* Custom Button Style */
+.button-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: #0073e6;
+  color: white;
+  border: 1px solid #005bb5;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.button-primary:hover {
+  background-color: #005bb5;
+}
+</style>

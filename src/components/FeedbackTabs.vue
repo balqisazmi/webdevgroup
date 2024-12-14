@@ -3,13 +3,13 @@
       <!-- Tab Navigation -->
       <div class="tabs">
         <button
-          :class="['pure-button', currentTab === 'Railway' ? 'active' : '']"
+          :class="['pure-btn', currentTab === 'Railway' ? 'active' : '']"
           @click="currentTab = 'Railway'"
         >
           Railway
         </button>
         <button
-          :class="['pure-button', currentTab === 'Station' ? 'active' : '']"
+          :class="['pure-btn', currentTab === 'Station' ? 'active' : '']"
           @click="currentTab = 'Station'"
         >
           Station
@@ -18,13 +18,13 @@
   
       <!-- Tab Content -->
       <div class="tab-content">
-        <RailwayFeedback v-if="currentTab === 'Railway'" />
-        <StationFeedback v-if="currentTab === 'Station'" />
-        <FeedbackForm
+        <RailwayPassengerInfo v-if="currentTab === 'Railway'" />
+        <StationPassengerInfo v-if="currentTab === 'Station'" />
+        <RailwayFeedback
         v-if="currentTab === 'Railway'"
         title="Railway Service Feedback"
       />
-      <FeedbackForm
+      <StationFeedback
         v-if="currentTab === 'Station'"
         title="Station Facilities Feedback"
       />
@@ -33,16 +33,19 @@
   </template>
   
   <script>
+  import RailwayPassengerInfo from "@/components/RailwayPassengerInfo.vue";
+  import StationPassengerInfo from "@/components/StationPassengerInfo.vue";
   import RailwayFeedback from "@/views/RailwayFeedback.vue";
   import StationFeedback from "@/views/StationFeedback.vue";
-  import FeedbackForm from "@/components/FeedbackForm.vue";
+ 
   
   export default {
     name: "FeedbackTabs",
     components: {
+      RailwayPassengerInfo,
+      StationPassengerInfo,
       RailwayFeedback,
       StationFeedback,
-      FeedbackForm,
     },
     data() {
       return {
@@ -62,7 +65,7 @@
   }
   
   /* Pure.css Button Customization for Tabs */
-  .pure-button {
+  .pure-btn {
     padding: 2% 20%; /* Adjust padding to fit the browser width */
     font-size: 1rem;
     background-color: #f2f2f2;
@@ -74,17 +77,17 @@
 
   /* Adjust button sizes for smaller or larger screens */
     @media (max-width: 768px) {
-  .pure-button {
+  .pure-btn {
     padding: 5% 20%; /* Add more padding on smaller screens */
   }
-  .pure-button:hover {
+  .pure-btn:hover {
     background-color: #0073e6;
     color: #fff;
   }
 }
 
   /* Active Tab Style */
-  .pure-button.active {
+  .pure-btn.active {
     background-color: #0073e6;
     color: white;
     border: 1px solid #005bb5;
